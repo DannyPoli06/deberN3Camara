@@ -1,17 +1,36 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+  <ion-toolbar color="primary">
+    <ion-title> Galería de Fotos </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">Galería de Fotos</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <!-- Mensaje si no hay fotos aún -->
+  @if (photoService.photos().length === 0) {
+    <div class="ion-text-center ion-padding" style="margin-top: 40px;">
+      <p>Aún no has tomado fotos.</p>
+      <p>Presiona el botón de la cámara para tomar una.</p>
+    </div>
+  }
+
+  <!-- Cuadrícula con la sintaxis del inge (@for con Signal) -->
+  <ion-grid>
+    <ion-row>
+      @for (photo of photoService.photos(); track photo.filepath; let position = $index) {
+        <ion-col size="6" size-md="4">
+          <ion-img 
+            [src]="photo.webviewPath" 
+            [attr.alt]="'Foto ' + (position + 1)" 
+            style="border-radius: 8px; overflow: hidden; height: 180px; object-fit: cover;"
+          ></ion-img>
+        </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
 </ion-content>
